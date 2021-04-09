@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion=43 >
+    <author>Silverlore</author>
+    <version>1.0.0.0</version>
+    <title>
+        <en>Crab steering extention</en>
+    </title>
+    <description>
+        <en><![CDATA[This Script makes it possible to use the dedicated controls for switching crab steering]]></en>
+    </description>
+
+    <iconFilename>icon.dds</iconFilename>
+
+    <multiplayer supported = "true" />
+
+    <extraSourceFiles>
+        <sourceFile filename="src/launcher.lua" />
+    </extraSourceFiles>
+</modDesc>

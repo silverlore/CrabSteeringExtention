@@ -8,11 +8,25 @@ function CrabSteeringExtention.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPreLoad", CrabSteeringExtention)
 end
 
-function CrabSteeringExtention.onPreLoad(savegame)
+function CrabSteeringExtention:onPreLoad(savegame)
 
-    print("CrabSteeringExtention: loading specialitation")
+    local i = 0
+    while true do
+        local key = ("vehicle.crabSteering.steeringMode(%d)"):format(i)
+        if not hasXMLProperty(self.xmlFile, key) then
+            break
+        end
+        local crabSteeringName = getXMLString(self.xmlFile, key .. "#name") 
 
-    --setXMLString(self.xmlFile, "vehicle.crabSteering.steeringMode(%d)#inputBindingName":format(0), "CRABSTEERING_ALLWHEEL")
-    --setXMLString(self.xmlFile, "vehicle.crabSteering.steeringMode(%d)#inputBindingName":format(2), "CRABSTEERING_CRABLEFT")
-    --setXMLString(self.xmlFile, "vehicle.crabSteering.steeringMode(%d)#inputBindingName":format(3), "CRABSTEERING_CRABRIGHT")
+        if(crabSteeringName == "action_steeringModeAllWheel") then
+            setXMLString(self.xmlFile, key .. "#inputBindingName", "CRABSTEERING_ALLWHEEL")
+        end
+        if(crabSteeringName == "action_steeringModeCrabLeft") then
+            setXMLString(self.xmlFile, key .. "#inputBindingName", "CRABSTEERING_CRABLEFT")
+        end
+        if(crabSteeringName == "action_steeringModeCrabRight") then
+            setXMLString(self.xmlFile, key .. "#inputBindingName", "CRABSTEERING_CRABRIGHT")
+        end
+        i = i + 1
+    end
 end

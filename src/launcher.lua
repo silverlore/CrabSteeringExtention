@@ -10,10 +10,8 @@ local function validateVehicleTypes(vehicleTypeManager)
     local typeManager = g_vehicleTypeManager
     local specializationManager = g_specializationManager
     for typeName, typeEntry in pairs(typeManager:getVehicleTypes()) do
-        print ("Testing vehicle type " .. typeName)
         if SpecializationUtil.hasSpecialization(CrabSteering, typeEntry.specializations) then
             typeManager:addSpecialization(typeName, modName .. ".CrabSteeringExtention")
-            print("CrabSteeringExtention:  Added extention to " .. typeName )
         end
     end
 end

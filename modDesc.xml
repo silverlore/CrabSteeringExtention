@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion=43 >
+<modDesc descVersion="53" >
     <author>Silverlore</author>
     <version>1.0.0.0</version>
     <title>
@@ -16,4 +16,9 @@
     <extraSourceFiles>
         <sourceFile filename="src/launcher.lua" />
     </extraSourceFiles>
+
+    <specializations>
+        <specialization name="CrabSteeringExtention" className="CrabSteeringExtention" filename="src/vehicles/specialization/CrabSteeringExtention.lua"/>
+    </specializations>
+
 </modDesc>

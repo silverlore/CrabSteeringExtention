@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+  <translationContributors>Silverlore</translationContributors>
+
+  <texts>
+    <text name="input_CSE_TOWARD_RIGHT" text="CSE: Crab toward right" />
+    <text name="input_CSE_TOWARD_LEFT" text="CSE: Crab toward left" />
+  </texts>
+</l10n>

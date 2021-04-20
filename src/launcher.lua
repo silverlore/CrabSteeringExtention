@@ -7,6 +7,7 @@ local vehiclesByReplaceType = {}
 
 local function validateVehicleTypes(vehicleTypeManager)
     print("CrabSteeringExtention: started vehicleTypesValidation.")
+    CrabSteeringExtention.modName = modName
     local typeManager = g_vehicleTypeManager
     local specializationManager = g_specializationManager
     for typeName, typeEntry in pairs(typeManager:getVehicleTypes()) do

@@ -1,4 +1,4 @@
-$include = @("*.xml", "*.lua", "*.dds", "src\vehicles\specialization\*.lua", "src\*.lua")
+$include = @("*.xml", "*.lua", "*.dds", "src\vehicles\specialization\*.lua", "src\*.lua", "translations\*.xml")
 $zipFilename = "FS19_CrabSteeringExtention.zip"
 
 if(test-path "$env:ProgramFiles\WinRAR\WinRAR.exe"){

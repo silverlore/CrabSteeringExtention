@@ -28,7 +28,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Package CrabSteeringExtention mod
-        run: zip -r -v FS22_CrabSteeringExtention.zip . -x .* .\* Image\* README.md modBuilder.ps1 modBuilder_test.ps1
+        run: zip -r -v FS22_CrabSteeringExtention.zip . -x .* .\* Image/\* README.md modBuilder.ps1 modBuilder_test.ps1
 
       - name: Archive build
         uses: actions/upload-artifact@v2

@@ -20,61 +20,62 @@ function CrabSteeringExtention:onPreLoad(savegame)
 
     while true do
         local key = (keytemplate):format(i)
-        if not hasXMLProperty(self.xmlFile, key) then
+        if not self.xmlFile:hasProperty(key) then
             break
         end
         
         inputKey = key .. "#inputBindingName"
 
-        local input = getXMLString(self.xmlFile, inputKey)
+        local input = self.xmlFile:getString(inputKey)
         if input ~= nil then
             needInputBinding = false
         end
 
-        local order = getXMLString(self.xmlFile, "#switchOrder")
+        local order = self.xmlFile:getString(key .. "#switchOrder")
         if order ~= nil then
             needOrder = false
         end
         
-        local crabSteeringName = getXMLString(self.xmlFile, key .. "#name")
+        local crabSteeringName = self.xmlFile:getString(key .. "#name")
         steering[crabSteeringName] = i
+        print(crabSteeringName);
 
         i = i + 1
     end
 
     if needInputBinding then 
-        if(steering["action_steeringModeAllWheel"] ~= nil) then
-            setXMLString(self.xmlFile, (keytemplate):format(steering["action_steeringModeAllWheel"]) .. "#inputBindingName", "CRABSTEERING_ALLWHEEL")
+        if(steering["$l10n_action_steeringModeAllWheel"] ~= nil) then
+            self.xmlFile:setString((keytemplate):format(steering["$l10n_action_steeringModeAllWheel"]) .. "#inputBindingName", "CRABSTEERING_ALLWHEEL")
         end
-        if(steering["action_steeringModeCrabLeft"] ~= nil) then
-            setXMLString(self.xmlFile, (keytemplate):format(steering["action_steeringModeCrabLeft"]) .. "#inputBindingName", "CRABSTEERING_CRABLEFT")
+        if(steering["$l10n_action_steeringModeCrabLeft"] ~= nil) then
+            self.xmlFile:setString((keytemplate):format(steering["$l10n_action_steeringModeCrabLeft"]) .. "#inputBindingName", "CRABSTEERING_CRABLEFT")
         end
-        if(steering["action_steeringModeCrabRight"] ~= nil) then
-            setXMLString(self.xmlFile, (keytemplate):format(steering["action_steeringModeCrabRight"]) .. "#inputBindingName", "CRABSTEERING_CRABRIGHT")
+        if(steering["$l10n_action_steeringModeCrabRight"] ~= nil) then
+            self.xmlFile:setString((keytemplate):format(steering["$l10n_action_steeringModeCrabRight"]) .. "#inputBindingName", "CRABSTEERING_CRABRIGHT")
         end
     end
 
     if needOrder then 
-        setXMLInt(self.xmlFile, "vehicle.crabSteering#defaultOrder", 1)
-        if(steering["action_steeringModeAllWheel"] ~= nil) then
-            setXMLInt(self.xmlFile, (keytemplate):format(steering["action_steeringModeAllWheel"]) .. "#switchOrder", 1)
+        self.xmlFile:setInt("vehicle.crabSteering#defaultOrder", 1)
+        if(steering["$l10n_action_steeringModeAllWheel"] ~= nil) then
+            self.xmlFile:setInt((keytemplate):format(steering["$l10n_action_steeringModeAllWheel"]) .. "#switchOrder", 1)
         end
-        if(steering["action_steeringModeCrabLeft"] ~= nil) then
-            setXMLInt(self.xmlFile, (keytemplate):format(steering["action_steeringModeCrabLeft"]) .. "#switchOrder", 0)
+        if(steering["$l10n_action_steeringModeCrabLeft"] ~= nil) then
+            self.xmlFile:setInt((keytemplate):format(steering["$l10n_action_steeringModeCrabLeft"]) .. "#switchOrder", 0)
         end
-        if(steering["action_steeringModeCrabRight"] ~= nil) then
-            setXMLInt(self.xmlFile, (keytemplate):format(steering["action_steeringModeCrabRight"]) .. "#switchOrder", 2)
+        if(steering["$l10n_action_steeringModeCrabRight"] ~= nil) then
+            self.xmlFile:setInt((keytemplate):format(steering["$l10n_action_steeringModeCrabRight"]) .. "#switchOrder", 2)
         end
     end
 end
 
 function CrabSteeringExtention:onLoad(savegame)
-    if(hasXMLProperty(self.xmlFile, "vehicle.crabSteering")) then
+    if(self.xmlFile:hasProperty("vehicle.crabSteering")) then
         local spec = self["spec_" .. CrabSteeringExtention.modName .. ".CrabSteeringExtention"]
         spec.orderToState = {}
         spec.StateToOrder = {}
 
-        local default = getXMLInt(self.xmlFile, "vehicle.crabSteering#defaultOrder")
+        local default = self.xmlFile:getInt("vehicle.crabSteering#defaultOrder")
 
         local i = 0
         local keytemplate = "vehicle.crabSteering.steeringMode(%d)"
@@ -84,11 +85,11 @@ function CrabSteeringExtention:onLoad(savegame)
 
         while true do
             local key = (keytemplate):format(i)
-            if not hasXMLProperty(self.xmlFile, key) then
+            if not self.xmlFile:hasProperty(key) then
                 break
             end
 
-            local order = getXMLInt(self.xmlFile, key .. "#switchOrder")
+            local order = self.xmlFile:getInt(key .. "#switchOrder")
             if order ~= nil then
                 table.insert(orderList,order)
                 orderMapper[order] = i + 1
@@ -137,37 +138,40 @@ end
 function CrabSteeringExtention:actionTowardRight()
     local crapspec = self.spec_crabSteering
     local spec = self["spec_" .. CrabSteeringExtention.modName .. ".CrabSteeringExtention"]
-    local state = crapspec.state;
-    local currentMode = spec.StateToOrder[state]
-    
-
-    if currentMode == nil then
-        state = spec.orderToState[spec.defaultOrder]
-    else
-        if currentMode + 1 <= table.getn(spec.orderToState) then
-            state = spec.orderToState[currentMode + 1]
+    if table.getn(spec.orderToState) > 0 then
+        local state = crapspec.state;
+        local currentMode = spec.StateToOrder[state]
+        
+        if currentMode == nil then
+            state = spec.orderToState[spec.defaultOrder]
+        else
+            if currentMode + 1 <= table.getn(spec.orderToState) then
+                state = spec.orderToState[currentMode + 1]
+            end
         end
-    end
-    if state ~= crapspec.state then
-        self:setCrabSteering(state)
+        if state ~= crapspec.state then
+            self:setCrabSteering(state)
+        end
     end
 end
 
 function CrabSteeringExtention:actionTowardLeft()
     local crapspec = self.spec_crabSteering
     local spec = self["spec_" .. CrabSteeringExtention.modName .. ".CrabSteeringExtention"]
-    local state = crapspec.state;
-    local currentMode = spec.StateToOrder[state]
-    
-    if currentMode == nil then
-        state = spec.orderToState[spec.defaultOrder]
-    else
-        if currentMode - 1 > 0 then
-            state = spec.orderToState[currentMode - 1]
+    if table.getn(spec.orderToState) > 0 then
+        local state = crapspec.state;
+        local currentMode = spec.StateToOrder[state]
+        
+        if currentMode == nil then
+            state = spec.orderToState[spec.defaultOrder]
+        else
+            if currentMode - 1 > 0 then
+                state = spec.orderToState[currentMode - 1]
+            end
         end
-    end
-    if state ~= crapspec.state then
-        self:setCrabSteering(state)
+        if state ~= crapspec.state then
+            self:setCrabSteering(state)
+        end
     end
 end
 

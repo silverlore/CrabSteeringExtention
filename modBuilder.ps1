@@ -1,5 +1,5 @@
 $include = @("*.xml", "*.lua", "*.dds", "src\vehicles\specialization\*.lua", "src\*.lua", "translations\*.xml")
-$zipFilename = "FS22_CrabSteeringExtention.zip"
+$zipFilename = "FS25_CrabSteeringExtention.zip"
 
 if(test-path "$env:ProgramFiles\WinRAR\WinRAR.exe")
 {
